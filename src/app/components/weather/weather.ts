@@ -1,25 +1,40 @@
+// Import Component decorator and OnInit lifecycle hook
 import { Component, OnInit } from '@angular/core';
-   import { CommonModule } from '@angular/common';
-   import { DataService } from '../services/data.service';
+// Import CommonModule for directives like *ngFor and *ngIf
+import { CommonModule } from '@angular/common';
+// Import the DataService to fetch weather data
+import { DataService } from '../services/data.service';
 
-   @Component({
-     selector: 'app-weather',
-     standalone: true,
-     imports: [CommonModule],
-     templateUrl: './weather.component.html',
-     styleUrl: './weather.component.css'
-   })
-   export class WeatherComponent implements OnInit {
-     weatherDescription: string = '';
+// Define this class as a standalone Angular component
+@Component({
+  // CSS selector used to embed this component in HTML (e.g., <app-weather></app-weather>)
+  selector: 'app-weather',
+  // Mark as standalone so it doesn't need an NgModule
+  standalone: true,
+  // Import modules/directives this component uses
+  imports: [CommonModule],
+  // Path to the component's HTML template file
+  templateUrl: './weather.component.html',
+  // Path to the component's CSS stylesheet
+  styleUrl: './weather.component.css'
+})
+export class WeatherComponent implements OnInit {
+  // String to store the weather description
+  weatherDescription: string = '';
 
-     constructor(private dataService: DataService) { }
+  // Inject the DataService through the constructor
+  constructor(private dataService: DataService) { }
 
-     ngOnInit(): void {
-       this.dataService.GetWeatherData().subscribe(
-         (data) => {
-           // Get the weather description from the API response
-           this.weatherDescription = data.weather[0].main + ', ' + data.weather[0].description;
-         }
-       );
-     }
-   }
+  // Angular lifecycle hook that runs when component initializes
+  ngOnInit(): void {
+    // Subscribe to the Observable returned by GetWeatherData()
+    this.dataService.GetWeatherData().subscribe(
+      // Arrow function receives the weather data from the API
+      (data) => {
+        // Extract main weather type and description from the API response
+        // Combine them with a comma separator (e.g., "Clouds, overcast clouds")
+        this.weatherDescription = data.weather[0].main + ', ' + data.weather[0].description;
+      }
+    );
+  }
+}
